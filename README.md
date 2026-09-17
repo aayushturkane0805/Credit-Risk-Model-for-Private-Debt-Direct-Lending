@@ -1,119 +1,136 @@
 # Credit Risk Model for Private Debt / Direct Lending
 
-## Overview
+## What this project is
 
-An end-to-end quantitative credit-risk and private-credit underwriting project. The workflow learns relationships between historical corporate financial ratios and bankruptcy outcomes, produces model-implied Probability of Default (PD) estimates for public-company borrowers, and translates those estimates into a hypothetical direct-lending underwriting framework.
+This project builds a quantitative credit-risk framework that connects **financial statement analysis → credit-event prediction → direct-lending underwriting**.
 
-> **Important:** The historical bankruptcy training population and the SEC public-company population are different populations and time periods. The resulting PD should therefore be treated as a **model-implied research estimate**, not a production-calibrated private-credit PD.
+The core question is:
 
-## What the project does
+> **Given a company's financial profile, how can a lender estimate credit risk and translate that risk into a lending decision?**
+
+The project learns from historical corporate financials and bankruptcy outcomes, applies the resulting model to a sample of public companies, and then converts the model output into an illustrative private-credit underwriting analysis.
+
+## How it works
 
 ```text
 Historical corporate financials
-            ↓
+        ↓
 Financial-ratio feature engineering
-            ↓
-Credit-event model
-     ┌──────┴──────┐
-     ↓             ↓
-Logistic       Gradient
-Regression     Boosting
-     └──────┬──────┘
-            ↓
-Model-implied Probability of Default
-            ↓
+        ↓
+Credit-event modeling
+   ┌────┴─────┐
+   ↓          ↓
+Logistic   Gradient
+Regression Boosting
+   └────┬─────┘
+        ↓
+Model-implied credit risk
+        ↓
 Public-company borrower scoring
-            ↓
-Hypothetical direct-lending underwriting
-            ↓
-Pricing • Facility sizing • Covenants • Expected loss
-            ↓
-EBITDA / interest-rate stress testing
-            ↓
-Credit memo + analytical outputs
+        ↓
+Direct-lending underwriting
+        ↓
+PD • LGD • EAD • Expected Loss
+        ↓
+Facility Size • Leverage • Coverage • Pricing
+        ↓
+Covenants + Stress Testing
+        ↓
+Credit Memo + Analytical Outputs
 ```
 
-## Companies used
+## The models
 
-| Ticker | Company | Sector | Role |
-|---|---|---|---|
-| MSFT | Microsoft Corporation | Technology | Primary detailed borrower |
-| AAPL | Apple Inc. | Technology | Comparative borrower |
-| AMZN | Amazon.com, Inc. | Consumer / Technology | Comparative borrower |
-| WMT | Walmart Inc. | Retail | Comparative borrower |
+### 1. Logistic Regression
 
-The historical training data is the UCI Polish Companies Bankruptcy dataset. The public-company layer is designed around SEC/XBRL financial data, with validation and fallback handling in the notebook.
+A transparent baseline model for a binary credit event. It estimates how the financial features relate to the probability of the modeled outcome and provides an interpretable benchmark.
 
-## Quantitative methodology
+### 2. Gradient Boosting
 
-### Financial features
+A nonlinear model built from multiple decision-stump learners. It can capture relationships between financial ratios that a simple linear model may not capture.
 
-The model uses profitability, leverage, liquidity, coverage, efficiency and capital-structure ratios, including:
+Both models are trained and evaluated using measures such as **ROC-AUC, PR-AUC, KS, Brier Score and Log Loss** where applicable. The notebook compares their validation performance before selecting the model used in the downstream analysis.
 
-- Net Profit / Total Assets
-- Total Liabilities / Total Assets
-- Working Capital / Total Assets
-- Current Assets / Short-Term Liabilities
-- Retained Earnings / Total Assets
-- EBIT / Total Assets
-- Equity / Total Liabilities
-- Sales / Total Assets
-- Equity / Total Assets
-- Gross Profit / Sales
-- Net Profit / Sales
-- Operating Profit / Interest Expense
-- Working Capital / Fixed Assets
-- Log Total Assets
-- (Liabilities - Cash) / Sales
-- Constant Capital / Total Assets
-- Operating Profit / Sales
-- Current Assets / Total Liabilities
-- Current Liabilities / Total Assets
-- Gross Margin
-- Long-Term Liabilities / Equity
+## Financial analysis
 
-### Models
+The feature set covers the main areas a credit analyst would examine:
 
-**Logistic Regression** provides a simple, interpretable baseline for a binary credit-event outcome.
+- **Profitability** — earnings relative to assets, sales and capital
+- **Leverage / solvency** — liabilities, equity and capital structure
+- **Liquidity** — working capital and current-asset coverage
+- **Coverage** — operating earnings relative to interest expense
+- **Efficiency** — sales and operating performance relative to assets
+- **Margins** — gross, operating and net profitability
 
-**Gradient Boosting** adds nonlinear decision rules by combining many weak tree-based learners.
+## From model output to lending decision
 
-The notebook evaluates model discrimination and probability quality using metrics such as ROC-AUC, PR-AUC, KS, Brier Score and Log Loss where applicable.
+The project goes beyond predicting credit risk. It uses the model output in a hypothetical direct-lending deal to show how quantitative risk can be incorporated into underwriting decisions.
 
-## Direct-lending underwriting layer
+The analysis includes:
 
-The model output is connected to an illustrative private-credit deal analysis covering:
-
-- Probability of Default (PD)
-- Loss Given Default (LGD)
-- Exposure at Default (EAD)
-- Expected Loss
-- Illustrative interest-rate spread and coupon
-- Maximum facility size
+- **PD, LGD and EAD**
+- **Expected Loss = PD × LGD × EAD**
+- Maximum facility sizing
 - Net leverage
 - Interest coverage
+- Illustrative pricing / interest-rate spread
 - Covenant thresholds
 - Risk-adjusted yield
 - EBITDA stress testing
 - Interest-rate stress testing
 
-The relationship used for simplified expected-loss analysis is:
+This creates a link between **statistical modeling and practical credit underwriting** rather than treating the model as a standalone machine-learning exercise.
 
-**Expected Loss = PD × LGD × EAD**
+## Sample borrowers
 
-## Visualizations
+The public-company application uses:
 
-Only the most decision-useful charts are emphasized:
+| Ticker | Company | Role |
+|---|---|---|
+| MSFT | Microsoft Corporation | Primary detailed borrower |
+| AAPL | Apple Inc. | Comparative borrower |
+| AMZN | Amazon.com, Inc. | Comparative borrower |
+| WMT | Walmart Inc. | Comparative borrower |
 
-1. **Model performance / ROC curve** — shows how well the model separates the two outcome classes.
-2. **Borrower PD comparison** — shows how model-implied risk differs across the sample public companies.
-3. **Stress-test visualization** — shows how underwriting metrics change as operating performance or financing costs deteriorate.
+Historical training data comes from the **UCI Polish Companies Bankruptcy dataset**, while the public-company layer is designed around SEC/XBRL financial data.
+
+## Key outputs
+
+The notebook produces decision-oriented outputs including:
+
+- Model performance metrics
+- Borrower feature data
+- Model-implied borrower risk scores
+- Deal analysis
+- Stress-test results
+- Decision-useful charts
+- SQLite analytical database
+- Professional Excel credit memo
+
+## Why this project matters
+
+This project combines **credit analysis, financial modeling and quantitative methods** in one workflow.
+
+It demonstrates how a lender or credit investor could move from:
+
+**financial statements → ratios → risk model → borrower risk assessment → leverage and coverage analysis → pricing → covenants → stress testing → credit memo.**
+
+The framework is relevant to workflows in **private credit, direct lending, credit hedge funds, commercial banking and corporate credit analysis**.
+
+## Documentation
+
+- [Finance Concepts](FINANCE_CONCEPTS.md) — definitions and how the project applies the key credit concepts.
+- [How to Run](HOW_TO_RUN.md) — step-by-step instructions for running the notebook and reviewing outputs.
+- [Limitations](LIMITATIONS.md) — methodology, data, calibration and practical-use limitations.
 
 ## Repository structure
 
 ```text
 Credit-Risk-Model-for-Private-Debt-Direct-Lending/
 ├── README.md
+├── FINANCE_CONCEPTS.md
+├── HOW_TO_RUN.md
+├── LIMITATIONS.md
 ├── notebooks/
 │   └── Credit_Risk_Model_Project.ipynb
 ├── src/
@@ -121,57 +138,17 @@ Credit-Risk-Model-for-Private-Debt-Direct-Lending/
 ├── data/
 │   └── README.md
 ├── outputs/
-│   ├── borrower_scores.csv
-│   ├── borrower_features.csv
-│   ├── model_metrics.csv
-│   ├── deal_analysis.csv
-│   ├── stress_test.csv
-│   └── charts/
 ├── models/
-│   └── final_model.json
 ├── reports/
-│   └── credit_memo.xlsx
 ├── sql/
-│   └── credit_risk.db
 ├── requirements.txt
 └── .gitignore
 ```
 
-## How to run
-
-The original implementation is designed for Google Colab. Open the notebook, run the main cell from top to bottom, and review the generated outputs. The notebook downloads the historical dataset and attempts to retrieve public-company financial information through SEC endpoints with defensive validation and fallback logic.
-
 ## Technologies
 
-- Python
-- NumPy
-- Pandas
-- Matplotlib
-- OpenPyXL
-- SQLite
-- SEC/XBRL data
-- Google Colab
-
-## Finance concepts demonstrated
-
-**Probability of Default (PD):** estimated probability of the defined credit event over the model's relevant horizon.
-
-**Default:** failure to meet a contractual debt obligation under the applicable loan terms. It is not synonymous with bankruptcy.
-
-**Loss Given Default (LGD):** proportion of exposure expected to be lost if default occurs, after considering recoveries.
-
-**Exposure at Default (EAD):** amount of credit exposure outstanding when default occurs.
-
-**Leverage:** relationship between debt and operating earnings, commonly expressed as debt / EBITDA in leveraged lending.
-
-**Interest Coverage:** ability of operating earnings to cover interest expense, commonly EBIT or EBITDA divided by interest expense depending on the underwriting definition.
-
-**Covenant:** contractual financial or operational requirement designed to protect lenders and provide early warning of deterioration.
-
-## Key limitation
-
-This is an educational/research underwriting framework. It is not intended to replace a lender's full due diligence, management assessment, industry analysis, legal documentation review, recovery analysis, or a production-grade probability-of-default calibration process.
+**Python • NumPy • Pandas • Matplotlib • OpenPyXL • SQLite • SEC/XBRL • Google Colab**
 
 ## Author
 
-Aayush Turkane
+**Aayush Turkane**
