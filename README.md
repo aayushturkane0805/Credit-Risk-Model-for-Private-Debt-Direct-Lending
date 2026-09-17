@@ -8,7 +8,7 @@ The core question is:
 
 > **Given a company's financial profile, how can a lender estimate credit risk and translate that risk into a lending decision?**
 
-The project learns from historical corporate financials and bankruptcy outcomes, applies the resulting model to a sample of public companies, and then converts the model output into an illustrative private-credit underwriting analysis.
+The project learns from historical corporate financials and bankruptcy outcomes, applies the resulting model to a sample of public companies, and converts the model output into an illustrative private-credit underwriting analysis.
 
 ## How it works
 
@@ -49,7 +49,7 @@ A transparent baseline model for a binary credit event. It estimates how the fin
 
 A nonlinear model built from multiple decision-stump learners. It can capture relationships between financial ratios that a simple linear model may not capture.
 
-Both models are trained and evaluated using measures such as **ROC-AUC, PR-AUC, KS, Brier Score and Log Loss** where applicable. The notebook compares their validation performance before selecting the model used in the downstream analysis.
+Both models are trained and evaluated using measures such as **ROC-AUC, PR-AUC, KS, Brier Score and Log Loss** where applicable. Their validation performance is compared before selecting the model used in the downstream analysis.
 
 ## Financial analysis
 
@@ -107,6 +107,14 @@ The notebook produces decision-oriented outputs including:
 - SQLite analytical database
 - Professional Excel credit memo
 
+## What the lender gets from the analysis
+
+The final output is designed to give a lender a structured view of the borrower before committing capital. The lender can assess the company's **model-implied credit risk, expected loss, leverage, interest coverage, facility capacity and risk-adjusted economics**, while also seeing how those metrics change under downside scenarios.
+
+This information supports the key underwriting questions: **How much should we lend? At what pricing? What leverage and coverage levels should we require? What covenants should protect the lender? How resilient is the borrower under stress? And, ultimately, does the proposed risk and return fit the lender's underwriting requirements?**
+
+The project therefore connects quantitative analysis to the practical decision process of **evaluating a borrower, structuring a facility, setting terms and determining whether the proposed lending opportunity meets the lender's requirements.**
+
 ## Why this project matters
 
 This project combines **credit analysis, financial modeling and quantitative methods** in one workflow.
@@ -120,8 +128,7 @@ The framework is relevant to workflows in **private credit, direct lending, cred
 ## Documentation
 
 - [Finance Concepts](FINANCE_CONCEPTS.md) — definitions and how the project applies the key credit concepts.
-- [How to Run](HOW_TO_RUN.md) — step-by-step instructions for running the notebook and reviewing outputs.
-- [Limitations](LIMITATIONS.md) — methodology, data, calibration and practical-use limitations.
+- [Limitations](LIMITATIONS.md) — a concise summary of the project's main limitations.
 
 ## Repository structure
 
@@ -129,7 +136,6 @@ The framework is relevant to workflows in **private credit, direct lending, cred
 Credit-Risk-Model-for-Private-Debt-Direct-Lending/
 ├── README.md
 ├── FINANCE_CONCEPTS.md
-├── HOW_TO_RUN.md
 ├── LIMITATIONS.md
 ├── notebooks/
 │   └── Credit_Risk_Model_Project.ipynb
