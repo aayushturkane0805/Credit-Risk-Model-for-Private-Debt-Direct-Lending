@@ -1,5 +1,0 @@
-Ticker,Company,Sector,Model_Implied_PD,Data_Source
-MSFT,Microsoft Corporation,Technology,0.04462377955946691,SEC Company Facts API
-AAPL,Apple Inc.,Technology,0.0474252907792228,SEC Company Facts API
-AMZN,"Amazon.com, Inc.",Consumer / Technology,0.04462377955946691,SEC Company Facts API
-WMT,Walmart Inc.,Retail,0.04462377955946691,SEC Company Facts API
