@@ -1,0 +1,22 @@
+Feature,Value,Description
+Attr1,0.17636238488559763,Net Profit / Total Assets
+Attr2,0.41666534805953775,Total Liabilities / Total Assets
+Attr3,0.05127403820796017,Working Capital / Total Assets
+Attr4,1.2303272619576484,Current Assets / Short-Term Liabilities
+Attr6,0.43285256917413,Retained Earnings / Total Assets
+Attr7,0.20469661487177865,EBIT / Total Assets
+Attr8,1.4000075952010989,Equity / Total Liabilities
+Attr9,0.4375652710528814,Sales / Total Assets
+Attr10,0.5833346519404623,Equity / Total Assets
+Attr19,0.6794409337058032,Gross Profit / Sales
+Attr23,0.4030538905915218,Net Profit / Sales
+Attr27,52.891652470187395,Operating Profit / Interest Expense
+Attr28,0.0706144922693611,Working Capital / Fixed Assets
+Attr29,27.35444514181687,Log Total Assets
+Attr30,0.889148050711339,(Liabilities - Cash) / Sales
+Attr38,0.6242998196145447,Constant Capital / Total Assets
+Attr42,0.4678081840892722,Operating Profit / Sales
+Attr50,0.6573330084275085,Current Assets / Total Liabilities
+Attr51,0.22261384853951074,Current Liabilities / Total Assets
+Attr56,0.6794409337058032,Gross Margin
+Attr59,0.07022584298363198,Long-Term Liabilities / Equity
